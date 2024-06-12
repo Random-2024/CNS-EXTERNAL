@@ -1,0 +1,89 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+string encrypt(string pt,int arr[2][2]){
+	string ct="";
+	if(pt.size()%2!=0) pt.push_back('z');
+	for(int i=0;i<pt.size();i+=2){
+		int a=pt[i]-97;
+		int b=pt[i+1]-97;
+		int c,d;
+		c=arr[0][0]*a+arr[0][1]*b;
+		d=arr[1][0]*a+arr[1][1]*b;
+		c=c%26;
+		d=d%26;
+		ct+=(char)(c+97);
+		ct+=(char)(d+97);
+	}
+	return ct;
+}
+
+int det(int a,int b,int c,int d){
+	return a*d-b*c;
+}
+
+int modinv(int a,int m){
+	a=a%m;
+	for(int x=1;x<m;x++){
+		if((a*x)%m==1) return x;
+	}
+	return -1;
+}
+
+string decrypt(string ct,int key[2][2]){
+	string pt="";
+	int d=det(key[0][0],key[0][1],key[1][0],key[1][1]);
+	int detinv=modinv(d,26);
+	if(detinv==-1) {
+		cout<<"Cantdecrypt";
+		return "";
+	}
+	int adj00=key[1][1];
+	int adj01=-key[0][1];
+	int adj10=-key[1][0];
+	int adj11=key[0][0];
+	
+	adj00=(adj00%26+26)%26;
+	adj01=(adj01%26+26)%26;
+	adj10=(adj10%26+26)%26;
+	adj11=(adj11%26+26)%26;
+	
+	int invkey[2][2]={{adj00,adj01},{adj10,adj11}};
+	
+	for(int i=0;i<ct.size();i+=2){
+		int a,b;
+		a=ct[i]-97;
+		b=ct[i+1]-97;
+		int c=invkey[0][0]*a+invkey[0][1]*b;
+		int d=invkey[1][0]*a+invkey[1][1]*b;
+		pt+=(char)(((c*detinv)%26+26)%26+97);
+		pt+=(char)(((d*detinv)%26+26)%26+97);
+	}
+	return pt;
+}
+
+void constructMatrix(string key,int arr[2][2]){
+	int k=0;
+	for(int i=0;i<2;i++){
+		for(int j=0;j<2;j++){
+			arr[i][j]=key[k]-97;
+			k++;
+		}
+	}
+}
+int main(){
+	string key;
+	cout<<"enter 4 bit key :";
+	cin>>key;
+	int arr[2][2];
+	constructMatrix(key,arr);
+	string pt;
+	cout<<"enter plain text :";
+	cin>>pt;
+	string ct=encrypt(pt,arr);
+	cout<<ct;
+	pt=decrypt(ct,arr);
+	cout<<endl<<pt;
+	return 0;
+}

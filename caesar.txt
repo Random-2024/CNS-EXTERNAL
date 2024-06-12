@@ -1,0 +1,65 @@
+#include<iostream>
+using namespace std;
+int main(){
+	string plainText;
+	cout<<"Enter plain text"<<endl;
+	cin>>plainText;
+	string cipherText=plainText;
+	cout<<"Enter key"<<endl;
+	int key;
+	cin>>key;
+	int n=plainText.size();
+	key=key%26;
+	for(int i=0;i<n;i++){
+		if(plainText[i]>='a' && plainText[i]<='z')
+		{
+		
+			if(plainText[i]+key>122){
+				int c=0;
+				c=key+plainText[i]-'z';
+				cipherText[i]='a'+c-1;
+			}
+			else
+				cipherText[i]=((plainText[i])+key);
+		}
+		else if(plainText[i]>='A' && plainText[i]<='Z'){
+			if(plainText[i]+key>'Z'){
+				int c=0;
+				c='Z'-plainText[i];
+				c=key-c;
+				cipherText[i]='A'+c-1;
+			}
+			else
+				cipherText[i]=((plainText[i])+key);
+		}
+	}
+	cout<<"CipherText : "<<cipherText;
+	
+	string cToPlain=cipherText;
+	
+	for(int i=0;i<n;i++){
+		if(cipherText[i]>='a' && cipherText[i]<='z')
+		{
+		
+			if(cipherText[i]-key<97){
+				int c=0;
+				c='a'-cipherText[i]+key;
+				cToPlain[i]='z'-c+1;
+			}
+			else
+				cToPlain[i]=((cipherText[i])-key);
+		}
+		else if(cipherText[i]>='A' && cipherText[i]<='Z'){
+			if(cipherText[i]-key<65){
+				int c=0;
+				c='A'-cipherText[i];
+				c=key+c;
+				cToPlain[i]='Z'-c+1;
+			}
+			else
+				cToPlain[i]=((cipherText[i])-key);
+		}
+	}
+	cout<<endl<<"PlainText : "<<cToPlain;
+	return 0;
+}

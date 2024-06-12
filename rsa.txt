@@ -1,0 +1,42 @@
+#include<iostream>
+#include<math.h>
+using namespace std;
+
+int gcd(int a,int b){
+	while(1){
+		int t=a%b;
+		if(t==0) return b;
+		a=b;
+		b=t;
+	}
+	
+}
+int main(){
+	double p,q;
+	cout<<"Enter primes p and q ";
+	cin>>p>>q;
+	double n=p*q;
+	double phi=(p-1)*(q-1);
+	double e;
+	cout<<"Enter encryption key ";
+	cin>>e;
+	double plain;
+	cout<<"Enter plain text";
+	cin>>plain;
+	int track;
+	while(e<phi){
+		track=gcd(e,phi);
+		if(track==1) break;
+		e++;
+	}
+	double d1=1/e;
+	double d=fmod(d1,phi);
+	
+	double c=pow(plain,e);
+	double pt=pow(c,d);
+	c=fmod(c,n);
+	pt=fmod(pt,n);
+	cout<<"Cipher text : "<<c<<endl;
+	cout<<"Plain text : "<<pt;
+	return 0;
+}
