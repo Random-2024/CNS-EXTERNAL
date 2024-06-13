@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<string.h>
+void caesor(char *text,int key)
+{
+	int i;
+	for(i=0;i<strlen(text);i++)
+	{
+		if(text[i]>='A' && text[i]<='Z')
+		{
+			text[i]=((text[i]-'A'+key)%26)+'A';
+		}
+		else if(text[i]>='a' && text[i]<='z')
+		{
+			text[i]=((text[i]-'a'+key)%26)+'a';
+		}	
+	}
+	printf("encrypted text is:%s\n",text);
+	for(i = 0; i < strlen(text); i++) {
+        if(text[i] >= 'A' && text[i] <= 'Z') {
+            text[i] = ((text[i] - 'A' - key + 26) % 26) + 'A';
+        }
+        else if(text[i] >= 'a' && text[i] <= 'z') {
+            text[i] = ((text[i] - 'a' - key + 26) % 26) + 'a';
+        }
+    }
+    printf("the decrypted text is:%s\n",text);	
+}
+int main()
+{	
+	char text[100];
+	int key;
+	printf("enter the text\n");
+	fgets(text,sizeof(text),stdin);
+	printf("enter the key\n");
+	scanf("%d",&key);
+	caesor(text,key);
+}
+    
